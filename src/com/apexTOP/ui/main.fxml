@@ -2,6 +2,7 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -11,9 +12,18 @@
   <children>
     <Button id="selectFolder" fx:id="bSelectFolder" layoutX="222.0" layoutY="14.0" mnemonicParsing="false" onAction="#bSelectFolderOnAction" prefWidth="364.0" text="Select Image Folder" />
     <ImageView fx:id="imageView" fitHeight="272.99993890874873" fitWidth="363.99993896484375" layoutX="222.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true" />
-    <Button id="sortImages" fx:id="bSortImages" layoutX="222.0" layoutY="49.0" mnemonicParsing="false" onAction="#bSortImagesOnAction" prefWidth="364.0" text="Sort Images" />
+    <Button id="sortImages" fx:id="bSortImages" layoutX="432.0" layoutY="49.0" mnemonicParsing="false" onAction="#bSortImagesOnAction" prefWidth="154.0" text="Sort Images" />
     <TextField fx:id="tbSearchImage" layoutX="222.0" layoutY="84.0" prefHeight="27.0" prefWidth="200.0" />
     <Button fx:id="bSearchImage" layoutX="432.0" layoutY="84.0" mnemonicParsing="false" onAction="#bSearchImageOnAction" prefWidth="154.0" text="Search Image" />
     <ListView fx:id="listView" editable="true" layoutX="14.0" layoutY="14.0" prefHeight="378.0" prefWidth="200.0" />
+    <ChoiceBox fx:id="cbSortImages" layoutX="222.0" layoutY="49.0" prefWidth="200.0">
+      <items>
+        <FXCollections fx:factory="observableArrayList">
+          <String fx:value="Sort Images by Date (Insertion)" />
+          <String fx:value="Sort Images by Date (Custom algorithm)" />
+          <String fx:value="Sort by best lighting quality" />
+        </FXCollections>
+      </items>
+    </ChoiceBox>
   </children>
 </AnchorPane>
