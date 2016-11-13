@@ -6,7 +6,7 @@ import java.util.Arrays;
  * Heap structure for big numbers. The maximum is set in the root.
  */
 public class MaxHeap implements IHeap {
-    private long[] storeArray;
+    private MediaObject[] storeArray;
     private int index = 0;
     private int capacity = Byte.MAX_VALUE;
 
@@ -16,7 +16,7 @@ public class MaxHeap implements IHeap {
      * @param initialCapacity Capacity of the Heap when first initialized.
      */
     public MaxHeap(int initialCapacity) {
-        storeArray = new long[initialCapacity];
+        storeArray = new MediaObject[initialCapacity];
         capacity = initialCapacity;
     }
 
@@ -24,7 +24,7 @@ public class MaxHeap implements IHeap {
      * Makes a MaxHeap with a initial capacity of 255.
      */
     public MaxHeap() {
-        storeArray = new long[capacity];
+        storeArray = new MediaObject[capacity];
     }
 
     /**
@@ -33,8 +33,8 @@ public class MaxHeap implements IHeap {
      * @param e Element to be added.
      */
     @Override
-    public void add(long e) {
-        if(storeArray[storeArray.length - 1] != 0)
+    public void add(MediaObject e) {
+        if(storeArray[storeArray.length - 1] != null)
             storeArray = Arrays.copyOf(storeArray, storeArray.length + (storeArray.length << 1));
         storeArray[index] = e;
         index++;
@@ -48,11 +48,11 @@ public class MaxHeap implements IHeap {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public long pop() {
-        long var = 0;
+    public MediaObject pop() {
+        MediaObject var = null;
         if(index != 0) {
             var = storeArray[0];
-            storeArray[0] = -1;
+            storeArray[0] = null;
         }
         sortArray();
         return var;
@@ -65,7 +65,7 @@ public class MaxHeap implements IHeap {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public long peak() {
+    public MediaObject peak() {
         return storeArray[0];
     }
 
@@ -94,23 +94,23 @@ public class MaxHeap implements IHeap {
      */
     private void sortArray() {
         if(index == 0) return;
-        if(storeArray[0] == -1) {
+        if(storeArray[0] == null) {
             index--;
             storeArray[0] = storeArray[index];
-            storeArray[index] = 0;
+            storeArray[index] = null;
 
             // Putting the root on the right place:
             int i = 0;
             while(true) {
-                if(storeArray[i] == 0) break;
-                if(storeArray[i] < storeArray[2*i+1]) {
-                    long tempVar = storeArray[i];
+                if(storeArray[i] == null) break;
+                if(storeArray[i].getGreyScaleMean() < storeArray[2*i+1].getGreyScaleMean()) {
+                    MediaObject tempVar = storeArray[i];
                     storeArray[i] = storeArray[2*i+1];
                     storeArray[2*i+1] = tempVar;
 
                     i = 2*i+1;
-                } else if(storeArray[i] < storeArray[2*i+2]) {
-                    long tempVar = storeArray[i];
+                } else if(storeArray[i].getGreyScaleMean() > storeArray[2*i+2].getGreyScaleMean()) {
+                    MediaObject tempVar = storeArray[i];
                     storeArray[i] = storeArray[2*i+2];
                     storeArray[2*i+2] = tempVar;
 
@@ -122,16 +122,16 @@ public class MaxHeap implements IHeap {
             while(true) {
                 if(i == 0) break;
                 if(i%2 != 0) {
-                    if(storeArray[i] > storeArray[(i-1)/2]) {
-                        long tempVar = storeArray[i];
+                    if(storeArray[i].getGreyScaleMean() > storeArray[(i-1)/2].getGreyScaleMean()) {
+                        MediaObject tempVar = storeArray[i];
                         storeArray[i] = storeArray[(i-1)/2];
                         storeArray[(i-1)/2] = tempVar;
 
                         i = (i-1)/2;
                     } else break;
                 } else {
-                    if(storeArray[i] > storeArray[(i-2)/2]) {
-                        long tempVar = storeArray[i];
+                    if(storeArray[i].getGreyScaleMean() > storeArray[(i-2)/2].getGreyScaleMean()) {
+                        MediaObject tempVar = storeArray[i];
                         storeArray[i] = storeArray[(i-2)/2];
                         storeArray[(i-2)/2] = tempVar;
 

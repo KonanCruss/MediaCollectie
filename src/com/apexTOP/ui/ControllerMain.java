@@ -9,6 +9,7 @@ import java.util.Date;
 import com.apexTOP.util.ISort;
 import com.apexTOP.util.SortDatum;
 import com.apexTOP.util.SortInsertion;
+import com.apexTOP.util.SortLightIntensity;
 import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -45,6 +46,7 @@ public class ControllerMain {
 
     public void bSortImagesOnAction(ActionEvent actionEvent) {
         int selectedID = cbSortImages.getSelectionModel().getSelectedIndex();
+        System.out.println(selectedID);
         if(UIMain.mediaList.isEmpty()) return;
         switch (selectedID) {
             case 0:
@@ -62,7 +64,7 @@ public class ControllerMain {
     }
 
     public void bSearchImageOnAction(ActionEvent actionEvent) {
-        
+
     }
 
     private void sortDatum() {
@@ -82,6 +84,11 @@ public class ControllerMain {
         listView.setItems(new ObservableListWrapper<>(sorter.getList()));
     }
     private void sortLightIntensity() {
-        System.out.println("Not implemented yet! Can't find a Java Library to get Image Filtering working");
+        ISort<MediaObject> sorter = new SortLightIntensity<>();
+        sorter.setList(UIMain.mediaList);
+        sorter.run();
+
+        UIMain.mediaList = new ArrayList<>(sorter.getList());
+        listView.setItems(new ObservableListWrapper<>(sorter.getList()));
     }
 }

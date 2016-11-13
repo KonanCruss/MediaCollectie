@@ -1,5 +1,9 @@
 package com.apexTOP.data;
 
+import Catalano.Imaging.FastBitmap;
+import Catalano.Imaging.Filters.Grayscale;
+import Catalano.Imaging.Tools.ImageHistogram;
+import Catalano.Imaging.Tools.ImageStatistics;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
@@ -72,5 +76,26 @@ public class MediaObject {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public double getGreyScaleMean() {
+        FastBitmap fb = new FastBitmap(file.getAbsolutePath());
+        fb.toGrayscale();
+
+        Grayscale filter = new Grayscale(0.2125,0.7154,0.0721);
+        filter.applyInPlace(fb);
+
+        ImageStatistics stats = new ImageStatistics(fb);
+        ImageHistogram hist = stats.getHistogramGray();
+
+        return hist.getMean();
+    }
+
+    public String toString() {
+        return "[" + datum.toString() + "] " + name;
+    }
+    public boolean equals(Object o) {
+        if(o instanceof MediaObject) return (this.getGreyScaleMean() == ((MediaObject) o).getGreyScaleMean());
+        else return false;
     }
 }

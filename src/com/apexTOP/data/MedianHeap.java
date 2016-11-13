@@ -34,7 +34,7 @@ public class MedianHeap implements IHeap {
      * @param e Element to be added.
      */
     @Override
-    public void add(long e) {
+    public void add(MediaObject e) {
         minHeap.add(e);
         sortHeaps();
     }
@@ -45,8 +45,8 @@ public class MedianHeap implements IHeap {
      * @return The root.
      */
     @Override
-    public long pop() {
-        long returnVar;
+    public MediaObject pop() {
+        MediaObject returnVar;
         if(minHeap.getLength() <= maxHeap.getLength())
             returnVar = maxHeap.pop();
         else
@@ -62,7 +62,7 @@ public class MedianHeap implements IHeap {
      * @return The root.
      */
     @Override
-    public long peak() {
+    public MediaObject peak() {
         if(minHeap.getLength() == maxHeap.getLength())
             return maxHeap.peak();
         else

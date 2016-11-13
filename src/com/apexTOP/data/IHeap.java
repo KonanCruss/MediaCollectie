@@ -1,9 +1,9 @@
 package com.apexTOP.data;
 
-public interface IHeap {
-    void add(long object);
-    long pop();
-    long peak();
+public interface IHeap<E> {
+    void add(MediaObject object);
+    MediaObject pop();
+    MediaObject peak();
     int getSize();
     int getLength();
 }
