@@ -11,6 +11,7 @@ public class SortLightIntensity<E extends MediaObject> implements ISort<E> {
 
     public SortLightIntensity() {
         sortList = new ArrayList<>();
+        sortHeap = new MedianHeap();
     }
 
     @Override
