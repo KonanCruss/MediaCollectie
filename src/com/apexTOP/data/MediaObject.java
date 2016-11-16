@@ -43,13 +43,13 @@ public class MediaObject {
         return file;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         try {
             Metadata metadata = ImageMetadataReader.readMetadata(file);
             for (Directory d : metadata.getDirectories()) {
                 if(d.getName().equals("GPS")) {
                     for (Tag t : d.getTags()) {
-                        if(t.getTagName().equals("GPS Longitude")) return Long.parseLong(t.getDescription());
+                        if(t.getTagName().equals("GPS Longitude")) return Double.parseDouble(t.getDescription());
                     }
                 }
             }
@@ -60,13 +60,13 @@ public class MediaObject {
         }
         return 0;
     }
-    public long getLatitude() {
+    public double getLatitude() {
         try {
             Metadata metadata = ImageMetadataReader.readMetadata(file);
             for (Directory d : metadata.getDirectories()) {
                 if(d.getName().equals("GPS")) {
                     for (Tag t : d.getTags()) {
-                        if(t.getTagName().equals("GPS Latitude")) return Long.parseLong(t.getDescription());
+                        if(t.getTagName().equals("GPS Latitude")) return Double.parseDouble(t.getDescription());
                     }
                 }
             }

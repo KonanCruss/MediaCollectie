@@ -32,7 +32,7 @@ public class SortLightIntensity<E extends MediaObject> implements ISort<E> {
         for (E media : sortList) {
             sortHeap.add(media);
         }
-        ArrayList<E> sortListTemp = new ArrayList<E>();
+        ArrayList<E> sortListTemp = new ArrayList<>();
         while (sortHeap.getLength() > 0) {
             sortListTemp.add((E) sortHeap.pop());
         }

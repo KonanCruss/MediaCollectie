@@ -15,7 +15,7 @@
     <Button id="sortImages" fx:id="bSortImages" layoutX="432.0" layoutY="49.0" mnemonicParsing="false" onAction="#bSortImagesOnAction" prefWidth="154.0" text="Sort Images" />
     <TextField fx:id="tbSearchImage" layoutX="222.0" layoutY="84.0" prefHeight="27.0" prefWidth="200.0" />
     <Button fx:id="bSearchImage" layoutX="432.0" layoutY="84.0" mnemonicParsing="false" onAction="#bSearchImageOnAction" prefWidth="154.0" text="Search Image" />
-    <ListView fx:id="listView" editable="true" layoutX="14.0" layoutY="14.0" prefHeight="378.0" prefWidth="200.0" />
+    <ListView fx:id="listView" editable="true" layoutX="14.0" layoutY="14.0" onMouseClicked="#lvOnMouseClicked" prefHeight="378.0" prefWidth="200.0" />
     <ChoiceBox fx:id="cbSortImages" layoutX="222.0" layoutY="49.0" prefWidth="200.0">
       <items>
         <FXCollections fx:factory="observableArrayList">

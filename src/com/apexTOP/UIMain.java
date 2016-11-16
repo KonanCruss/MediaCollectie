@@ -24,6 +24,7 @@ public class UIMain extends Application {
         mediaList = new ArrayList<>();
 
         Parent root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
+
         primaryStage.setScene(new Scene(root, 585, 395));
         primaryStage.setTitle("Datastructuren");
         primaryStage.setResizable(false);
