@@ -1,4 +1,4 @@
-package com.apexTOP.data;
+package MediaCollectie.data;
 
 /**
  * Heap structure that uses a <class>MinHeap</class> and <class>MaxHeap</class> to get the

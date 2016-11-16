@@ -1,4 +1,4 @@
-package com.apexTOP.data;
+package MediaCollectie.data;
 
 import Catalano.Imaging.FastBitmap;
 import Catalano.Imaging.Filters.Grayscale;

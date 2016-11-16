@@ -1,9 +1,9 @@
-package com.apexTOP.util;
+package MediaCollectie.util;
 
 import java.util.ArrayList;
 
-public interface ISort<E> {
+public interface ISearch<E> {
     boolean setList(ArrayList<E> list);
     ArrayList<E> getList();
-    void run();
+    E run();
 }

@@ -1,6 +1,6 @@
-package com.apexTOP;
+package MediaCollectie;
 
-import com.apexTOP.data.MediaObject;
+import MediaCollectie.data.MediaObject;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

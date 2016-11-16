@@ -1,8 +1,8 @@
-package com.apexTOP;
+package MediaCollectie;
 
-import com.apexTOP.data.MediaObject;
-import com.apexTOP.util.ISort;
-import com.apexTOP.util.SortDatum;
+import MediaCollectie.data.MediaObject;
+import MediaCollectie.util.ISort;
+import MediaCollectie.util.SortDatum;
 
 import java.io.*;
 import java.util.ArrayList;

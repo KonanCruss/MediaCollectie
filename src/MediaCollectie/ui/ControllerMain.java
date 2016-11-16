@@ -1,8 +1,8 @@
-package com.apexTOP.ui;
+package MediaCollectie.ui;
 
-import com.apexTOP.UIMain;
-import com.apexTOP.data.MediaObject;
-import com.apexTOP.util.*;
+import MediaCollectie.UIMain;
+import MediaCollectie.data.MediaObject;
+import MediaCollectie.util.*;
 import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

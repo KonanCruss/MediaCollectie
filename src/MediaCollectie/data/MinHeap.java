@@ -1,29 +1,29 @@
-package com.apexTOP.data;
+package MediaCollectie.data;
 
 import java.util.Arrays;
 
 /**
- * Heap structure for big numbers. The maximum is set in the root.
+ * Heap structure for big numbers. The minimum is set in the root.
  */
-public class MaxHeap implements IHeap {
+public class MinHeap implements IHeap {
     private MediaObject[] storeArray;
     private int index = 0;
     private int capacity = Byte.MAX_VALUE;
 
     /**
-     * Makes a MaxHeap with a set <param>initialCapacity</param>.
+     * Makes a MinHeap with a set <param>initialCapacity</param>.
      *
      * @param initialCapacity Capacity of the Heap when first initialized.
      */
-    public MaxHeap(int initialCapacity) {
+    public MinHeap(int initialCapacity) {
         storeArray = new MediaObject[initialCapacity];
         capacity = initialCapacity;
     }
 
     /**
-     * Makes a MaxHeap with a initial capacity of 255.
+     * Makes a MinHeap with a initial capacity of 255.
      */
-    public MaxHeap() {
+    public MinHeap() {
         storeArray = new MediaObject[capacity];
     }
 
@@ -49,12 +49,14 @@ public class MaxHeap implements IHeap {
     @SuppressWarnings("unchecked")
     @Override
     public MediaObject pop() {
-        MediaObject var = null;
-        if(index != 0) {
-            var = storeArray[0];
-            storeArray[0] = null;
-        }
+        if(index == 0)
+            return null;
+
+        MediaObject var = storeArray[0];
+        storeArray[0] = null;
+
         sortArray();
+
         return var;
     }
 
@@ -90,7 +92,7 @@ public class MaxHeap implements IHeap {
     }
 
     /**
-     * Sorts the Heap so the root always has the maximum.
+     * Sorts the Heap so the root always has the minimum.
      */
     private void sortArray() {
         if(index == 0) return;
@@ -103,7 +105,7 @@ public class MaxHeap implements IHeap {
             int i = 0;
             while(true) {
                 if(storeArray[i] == null) break;
-                if(storeArray[i].getGreyScaleMean() < storeArray[2*i+1].getGreyScaleMean()) {
+                if(storeArray[i].getGreyScaleMean() > storeArray[2*i+1].getGreyScaleMean()) {
                     MediaObject tempVar = storeArray[i];
                     storeArray[i] = storeArray[2*i+1];
                     storeArray[2*i+1] = tempVar;
@@ -122,7 +124,7 @@ public class MaxHeap implements IHeap {
             while(true) {
                 if(i == 0) break;
                 if(i%2 != 0) {
-                    if(storeArray[i].getGreyScaleMean() > storeArray[(i-1)/2].getGreyScaleMean()) {
+                    if(storeArray[i].getGreyScaleMean() < storeArray[(i-1)/2].getGreyScaleMean()) {
                         MediaObject tempVar = storeArray[i];
                         storeArray[i] = storeArray[(i-1)/2];
                         storeArray[(i-1)/2] = tempVar;
@@ -130,7 +132,7 @@ public class MaxHeap implements IHeap {
                         i = (i-1)/2;
                     } else break;
                 } else {
-                    if(storeArray[i].getGreyScaleMean() > storeArray[(i-2)/2].getGreyScaleMean()) {
+                    if(storeArray[i].getGreyScaleMean() < storeArray[(i-2)/2].getGreyScaleMean()) {
                         MediaObject tempVar = storeArray[i];
                         storeArray[i] = storeArray[(i-2)/2];
                         storeArray[(i-2)/2] = tempVar;

@@ -1,4 +1,4 @@
-package com.apexTOP.util;
+package MediaCollectie.util;
 
 import com.drew.lang.annotations.NotNull;
 import org.w3c.dom.Document;
@@ -9,7 +9,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.net.*;
-import java.util.Enumeration;
 
 public class HandlerLocation {
     public static String[] getLatitudeAndLongitude(@NotNull String ipAddress) {

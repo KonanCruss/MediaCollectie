@@ -1,7 +1,7 @@
-package com.apexTOP.util;
+package MediaCollectie.util;
 
-import com.apexTOP.data.MediaObject;
-import com.apexTOP.data.MedianHeap;
+import MediaCollectie.data.MediaObject;
+import MediaCollectie.data.MedianHeap;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.apexTOP.data;
+package MediaCollectie.data;
 
 public interface IHeap<E> {
     void add(MediaObject object);

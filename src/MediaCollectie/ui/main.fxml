@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" disable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.apexTOP.ui.ControllerMain">
+<AnchorPane id="AnchorPane" disable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="MediaCollectie.ui.ControllerMain">
   <children>
     <Button id="selectFolder" fx:id="bSelectFolder" layoutX="222.0" layoutY="14.0" mnemonicParsing="false" onAction="#bSelectFolderOnAction" prefWidth="364.0" text="Select Image Folder" />
     <ImageView fx:id="imageView" fitHeight="272.99993890874873" fitWidth="363.99993896484375" layoutX="222.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true" />
