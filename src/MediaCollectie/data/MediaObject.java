@@ -30,6 +30,9 @@ public class MediaObject {
         file = _file;
     }
 
+    // =================================================================================================================
+    // Properties:
+    // =================================================================================================================
     public String getName() {
         return name;
     }
@@ -43,6 +46,9 @@ public class MediaObject {
         return file;
     }
 
+    // =================================================================================================================
+    // Calculation values:
+    // =================================================================================================================
     public double getLongitude() {
         try {
             Metadata metadata = ImageMetadataReader.readMetadata(file);
@@ -77,7 +83,6 @@ public class MediaObject {
         }
         return 0;
     }
-
     public double getGreyScaleMean() {
         FastBitmap fb = new FastBitmap(file.getAbsolutePath());
         fb.toGrayscale();
@@ -92,10 +97,9 @@ public class MediaObject {
     }
 
     public String toString() {
-        return "[" + datum.toString() + "] " + name;
+        return "[" + getDatum().toString() + "] " + getName();
     }
     public boolean equals(Object o) {
-        if(o instanceof MediaObject) return (this.getGreyScaleMean() == ((MediaObject) o).getGreyScaleMean());
-        else return false;
+        return o instanceof MediaObject && (this.getFile().getAbsolutePath().equals(((MediaObject) o).getFile().getAbsolutePath()));
     }
 }

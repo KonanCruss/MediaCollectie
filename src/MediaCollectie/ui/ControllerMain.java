@@ -65,54 +65,12 @@ public class ControllerMain {
         }
     }
     public void bSearchImageOnAction(ActionEvent actionEvent) {
+        // The text in the TextField.
         String dateTextString = tbSearchImage.getText();
-        // Checking if the text box has been filled in, and correctly. Otherwise it will search on the closest location.
-        if(dateTextString.equals("")) {
-            //String IPAddress = HandlerLocation.getLocalLANAddress().getHostAddress();
-            //System.out.println("IPAddress: " + IPAddress);
-            String[] location = HandlerLocation.getLatitudeAndLongitude("");
-            if(location == null || location.length < 2) {
-                System.out.println("EXCEPTION");
-                return;
-            }
-            System.out.println("Test: " + location[0] + "," + location[1]);
 
-            ISearch<MediaObject> searcher = new SearchClosest<>(Double.parseDouble(location[0]), Double.parseDouble(location[1]));
-            if(UIMain.mediaList.isEmpty()) return;
-            imageView.setImage(new Image(searcher.run().getFile().getAbsolutePath()));
-            return;
-        }
-        if(dateTextString.charAt(2) != '/' || dateTextString.charAt(5) != '/') {
-            System.out.println("ERROR 3");
-            return;
-        }
-
-        // Splits the text into its various compartments.
-        String[] dateText = dateTextString.split("/");
-        if(Integer.parseInt(dateText[0]) > 31 || Integer.parseInt(dateText[1]) > 12) {
-            System.out.println("Error 2");
-            return;
-        }
-
-        // Making them integers
-        int year = Integer.parseInt(dateText[2]);
-        int month = Integer.parseInt(dateText[1]);
-        int day = Integer.parseInt(dateText[0]);
-
-        // Getting the date written in the text box.
-        Calendar date = Calendar.getInstance();
-        date.set(year, month,day);
-        Date compareDate = date.getTime();
-
-        // Making sure the list isn't empty.
-        if(UIMain.mediaList.isEmpty()) return;
-
-        // Start the searcher.
-        ISearch<MediaObject> searcher = new SearchDate<>(compareDate);
-        searcher.setList(UIMain.mediaList);
-
-        // Set the result of the searcher in the Image View.
-        imageView.setImage(new Image(searcher.run().getFile().getAbsolutePath()));
+        // If TextField is empty, search based on location otherwise try searching based on the filled in date.
+        if(dateTextString.equals("")) searchLocation();
+        else searchDate(dateTextString);
     }
     public void lvOnMouseClicked(MouseEvent mouseEvent) {
         if(!handlerSet) {
@@ -150,5 +108,57 @@ public class ControllerMain {
 
         UIMain.mediaList = new ArrayList<>(sorter.getList());
         listView.setItems(new ObservableListWrapper<>(sorter.getList()));
+    }
+
+    private void searchLocation() {
+        // Get the latitude and longitude value of your current location (needs connection to the web).
+        String[] location = HandlerLocation.getLatitudeAndLongitude("");
+        // Some control to make sure there are no NullPointerExceptions.
+        if(location == null || location.length < 2) {
+            //System.out.println("EXCEPTION");
+            return;
+        }
+        //System.out.println("Test: " + location[0] + "," + location[1]);
+
+        // Search for the image.
+        ISearch<MediaObject> searcher = new SearchClosest<>(Double.parseDouble(location[0]), Double.parseDouble(location[1]));
+        if(UIMain.mediaList.isEmpty()) return;
+        imageView.setImage(new Image(searcher.run().getFile().getAbsolutePath()));
+    }
+    private void searchDate(String dateTextString) {
+        // Make sure that the format of the date is right.
+        if(dateTextString.charAt(2) != '/' || dateTextString.charAt(5) != '/') {
+            System.out.println("ERROR 3");
+            return;
+        }
+
+        // Splits the text into its various compartments.
+        String[] dateText = dateTextString.split("/");
+        if(Integer.parseInt(dateText[0]) > 31 || Integer.parseInt(dateText[1]) > 12) {
+            System.out.println("Error 2");
+            return;
+        }
+
+        // Making them integers
+        int year = Integer.parseInt(dateText[2]);
+        int month = Integer.parseInt(dateText[1]);
+        int day = Integer.parseInt(dateText[0]);
+
+        // Getting the date written in the text box.
+        Calendar date = Calendar.getInstance();
+        date.set(year, month,day);
+        Date compareDate = date.getTime();
+
+        // Making sure the list isn't empty.
+        if(UIMain.mediaList.isEmpty()) return;
+
+        // Start the searcher.
+        ISearch<MediaObject> searcher = new SearchDateList<>(compareDate);
+        searcher.setList(UIMain.mediaList);
+
+        // Set the result of the searcher in the Image View.
+        imageView.setImage(new Image(searcher.run().getFile().getAbsolutePath()));
+        // Set the listView to all the found images.
+        listView.setItems(new ObservableListWrapper<>(searcher.getList()));
     }
 }
