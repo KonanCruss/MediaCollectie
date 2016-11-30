@@ -2,6 +2,7 @@ package MediaCollectie.util;
 
 import MediaCollectie.data.MediaObject;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -21,7 +22,7 @@ public class SearchDateList<E extends MediaObject> extends SearchDate<E> {
      *
      * @param date Date on which you want matches to be found.
      */
-    public SearchDateList(Date date) {
+    public SearchDateList(LocalDate date) {
         super(date);
     }
 
@@ -37,7 +38,7 @@ public class SearchDateList<E extends MediaObject> extends SearchDate<E> {
         ArrayList<E> tempList = new ArrayList<E>();
 
         // Cases on which we don't need to start searching:
-        if(list.get(0).getDatum().getTime() > controlDate.getTime() || list.get(list.size() - 1).getDatum().getTime() < controlDate.getTime())
+        if(controlDate.isAfter(list.get(list.size() - 1).getDate()) || controlDate.isBefore(list.get(0).getDate()))
             return null;
 
         while(true) {
@@ -47,11 +48,11 @@ public class SearchDateList<E extends MediaObject> extends SearchDate<E> {
 
             // Binary search:
             int i = list.size() % 2;
-            if(list.get(i).getDatum().getTime() == controlDate.getTime())
+            if(list.get(i).getDate().isEqual(controlDate))
                 tempList.add(list.get(i));                                  // Adds the match to a temp List.
-            if(list.get(i).getDatum().getTime() > controlDate.getTime())
+            if(list.get(i).getDate().isAfter(controlDate))
                 while(list.size() > i) list.remove(i);                      // Deletes all the variables after index i.
-            if(list.get(i).getDatum().getTime() < controlDate.getTime())
+            if(list.get(i).getDate().isBefore(controlDate))
                 while(list.size() > i) list.remove(0);                      // Deletes all the variables before index i.
         }
 

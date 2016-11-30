@@ -34,10 +34,12 @@ public class SearchClosest<E extends MediaObject> implements ISearch<E> {
 
         for(E media : searchList) {
             double distance = HandlerLocation.geoDistance(lat, lon, media.getLatitude(), media.getLongitude());
+            //System.out.print(cDistance - distance);
             if(cDistance > distance) {
                 cDistance = distance;
                 closest = media;
             }
+            //System.out.println(" " + closest);
         }
 
         return closest;

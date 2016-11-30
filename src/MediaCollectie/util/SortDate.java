@@ -11,10 +11,10 @@ import java.util.ArrayList;
  *
  * @param <E>
  */
-public class SortDatum<E extends MediaObject> implements ISort<E> {
+public class SortDate<E extends MediaObject> implements ISort<E> {
     private ArrayList<E> list;
 
-    public SortDatum() {
+    public SortDate() {
         list = new ArrayList<>();
     }
 
@@ -51,7 +51,7 @@ public class SortDatum<E extends MediaObject> implements ISort<E> {
             tempList.add(list.get(0));
             for(int i = 1; i < list.size(); i++) {
                 for(int j = 0; j < tempList.size(); j++)
-                    if(tempList.get(j).getDatum().getTime() >= list.get(i).getDatum().getTime()) {
+                    if(tempList.get(j).getDate().isAfter(list.get(i).getDate())) {
                         tempList.add(j, list.get(i));
                         break;
                     }

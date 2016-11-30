@@ -1,7 +1,9 @@
 package MediaCollectie.util;
 
 import MediaCollectie.data.MediaObject;
+import com.sun.istack.internal.NotNull;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -12,14 +14,14 @@ import java.util.Date;
  */
 public class SearchDate<E extends MediaObject> implements ISearch<E> {
     ArrayList<E> list;
-    Date controlDate;
+    LocalDate controlDate;
 
     /**
      * Making a SearchDate searching object to get the first match.
      *
      * @param date Date on which you want a match to be found.
      */
-    public SearchDate(Date date) {
+    public SearchDate(@NotNull LocalDate date) {
         list = new ArrayList<>();
         controlDate = date;
     }
@@ -31,7 +33,7 @@ public class SearchDate<E extends MediaObject> implements ISearch<E> {
      * @return True if the list was set successfully.
      */
     @Override
-    public boolean setList(ArrayList<E> list) {
+    public boolean setList(@NotNull ArrayList<E> list) {
         this.list = list;
         return list.equals(this.list);
     }
@@ -54,7 +56,7 @@ public class SearchDate<E extends MediaObject> implements ISearch<E> {
     @Override
     public E run() {
         // Cases on which we don't need to start searching:
-        if(list.get(0).getDatum().getTime() > controlDate.getTime() || list.get(list.size() - 1).getDatum().getTime() < controlDate.getTime())
+        if(controlDate.isAfter(list.get(list.size() - 1).getDate()) || controlDate.isBefore(list.get(0).getDate()))
             return null;
 
         while(true) {
@@ -64,11 +66,11 @@ public class SearchDate<E extends MediaObject> implements ISearch<E> {
 
             // Binary search:
             int i = list.size() % 2;
-            if(list.get(i).getDatum().getTime() == controlDate.getTime())
+            if(list.get(i).getDate().isEqual(controlDate))
                 return list.get(i);                                             // Match found.
-            if(list.get(i).getDatum().getTime() > controlDate.getTime())
+            if(list.get(i).getDate().isAfter(controlDate))
                 while(list.size() > i) list.remove(i);                          // Remove every variable after the index i.
-            if(list.get(i).getDatum().getTime() < controlDate.getTime())
+            if(list.get(i).getDate().isBefore(controlDate))
                 while(list.size() > i) list.remove(0);                          // Remove every variable before the index i.
         }
     }

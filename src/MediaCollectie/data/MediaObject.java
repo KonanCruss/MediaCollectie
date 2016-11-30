@@ -4,6 +4,7 @@ import Catalano.Imaging.FastBitmap;
 import Catalano.Imaging.Filters.Grayscale;
 import Catalano.Imaging.Tools.ImageHistogram;
 import Catalano.Imaging.Tools.ImageStatistics;
+import MediaCollectie.util.HandlerLocation;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
@@ -12,6 +13,8 @@ import com.drew.metadata.Tag;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 /**
@@ -39,11 +42,14 @@ public class MediaObject {
     public int getSize() {
         return size;
     }
-    public Date getDatum() {
+    /*public Date getDatum() {
         return datum;
-    }
+    }*/
     public File getFile() {
         return file;
+    }
+    public LocalDate getDate() {
+        return datum.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     // =================================================================================================================
@@ -55,7 +61,7 @@ public class MediaObject {
             for (Directory d : metadata.getDirectories()) {
                 if(d.getName().equals("GPS")) {
                     for (Tag t : d.getTags()) {
-                        if(t.getTagName().equals("GPS Longitude")) return Double.parseDouble(t.getDescription());
+                        if(t.getTagName().equals("GPS Longitude")) return HandlerLocation.StringToRad(t.getDescription());
                     }
                 }
             }
@@ -72,7 +78,7 @@ public class MediaObject {
             for (Directory d : metadata.getDirectories()) {
                 if(d.getName().equals("GPS")) {
                     for (Tag t : d.getTags()) {
-                        if(t.getTagName().equals("GPS Latitude")) return Double.parseDouble(t.getDescription());
+                        if(t.getTagName().equals("GPS Latitude")) return HandlerLocation.StringToRad(t.getDescription());
                     }
                 }
             }
@@ -97,9 +103,11 @@ public class MediaObject {
     }
 
     public String toString() {
-        return "[" + getDatum().toString() + "] " + getName();
+        return "[" + getDate().toString() + "] " + getName();
     }
     public boolean equals(Object o) {
         return o instanceof MediaObject && (this.getFile().getAbsolutePath().equals(((MediaObject) o).getFile().getAbsolutePath()));
     }
+
+
 }

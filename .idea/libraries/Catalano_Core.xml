@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Catalano.Core">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../School/Datastructuren/Libraries/Catalano.Core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../School/Datastructuren/Libraries/Catalano.Image.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../School/Datastructuren/Libraries/Catalano.Math.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../School/Datastructuren/Libraries/Catalano.Statistics.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../School/Datastructuren/Libraries/metadata-extractor-2.9.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

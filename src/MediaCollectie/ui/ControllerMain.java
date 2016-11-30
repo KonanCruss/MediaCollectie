@@ -4,34 +4,26 @@ import MediaCollectie.UIMain;
 import MediaCollectie.data.MediaObject;
 import MediaCollectie.util.*;
 import com.sun.javafx.collections.ObservableListWrapper;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class ControllerMain {
-    // Weird variable to use to make a handler, and to not duplicate it ... Need a better method than what's currently used >.<
-    private boolean handlerSet = false;
-
     public Button bSelectFolder;
     public ImageView imageView;
     public Button bSortImages;
-    public TextField tbSearchImage;
     public Button bSearchImage;
     public ListView<MediaObject> listView;
     public ChoiceBox cbSortImages;
+    public DatePicker getDate;
 
     public void bSelectFolderOnAction(ActionEvent actionEvent) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -39,6 +31,11 @@ public class ControllerMain {
 
         File selectedFile = directoryChooser.showDialog(UIMain.UIStage);
         if(selectedFile == null || selectedFile.listFiles() == null) return;
+
+        if(!UIMain.mediaList.isEmpty()) {
+            UIMain.mediaList.clear();
+            listView.getItems().clear();
+        }
 
         for(File f : selectedFile.listFiles())
             if(f.isFile())
@@ -66,27 +63,20 @@ public class ControllerMain {
     }
     public void bSearchImageOnAction(ActionEvent actionEvent) {
         // The text in the TextField.
-        String dateTextString = tbSearchImage.getText();
+        LocalDate date = getDate.getValue();
 
         // If TextField is empty, search based on location otherwise try searching based on the filled in date.
-        if(dateTextString.equals("")) searchLocation();
-        else searchDate(dateTextString);
+        if(date == null) searchLocation();
+        else searchDate(date);
     }
     public void lvOnMouseClicked(MouseEvent mouseEvent) {
-        if(!handlerSet) {
-            listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MediaObject>() {
-                @Override
-                public void changed(ObservableValue<? extends MediaObject> observable, MediaObject oldValue, MediaObject newValue) {
-                    if(oldValue.equals(newValue)) return;
-                    imageView.setImage(new Image(newValue.getFile().getAbsolutePath()));
-                }
-            });
-            handlerSet = true;
-        }
+        //System.out.println(listView.getSelectionModel().getSelectedItem().getFile().toURI().toString());
+        Image test = new Image(listView.getSelectionModel().getSelectedItem().getFile().toURI().toString());
+        imageView.setImage(test);
     }
 
     private void sortDatum() {
-        ISort<MediaObject> sorter = new SortDatum<>();
+        ISort<MediaObject> sorter = new SortDate<>();
         sorter.setList(UIMain.mediaList);
         sorter.run();
 
@@ -115,50 +105,25 @@ public class ControllerMain {
         String[] location = HandlerLocation.getLatitudeAndLongitude("");
         // Some control to make sure there are no NullPointerExceptions.
         if(location == null || location.length < 2) {
-            //System.out.println("EXCEPTION");
             return;
         }
-        //System.out.println("Test: " + location[0] + "," + location[1]);
+        if(UIMain.mediaList.isEmpty()) return;
 
         // Search for the image.
-        ISearch<MediaObject> searcher = new SearchClosest<>(Double.parseDouble(location[0]), Double.parseDouble(location[1]));
-        if(UIMain.mediaList.isEmpty()) return;
-        imageView.setImage(new Image(searcher.run().getFile().getAbsolutePath()));
+        ISearch<MediaObject> searcher = new SearchClosest<>(HandlerLocation.D2R(Double.parseDouble(location[0])), HandlerLocation.D2R(Double.parseDouble(location[1])));
+
+        searcher.setList(UIMain.mediaList);
+        MediaObject search = searcher.run();
+        System.out.println(search);
+        imageView.setImage(new Image(search.getFile().toURI().toString()));
     }
-    private void searchDate(String dateTextString) {
-        // Make sure that the format of the date is right.
-        if(dateTextString.charAt(2) != '/' || dateTextString.charAt(5) != '/') {
-            System.out.println("ERROR 3");
-            return;
-        }
-
-        // Splits the text into its various compartments.
-        String[] dateText = dateTextString.split("/");
-        if(Integer.parseInt(dateText[0]) > 31 || Integer.parseInt(dateText[1]) > 12) {
-            System.out.println("Error 2");
-            return;
-        }
-
-        // Making them integers
-        int year = Integer.parseInt(dateText[2]);
-        int month = Integer.parseInt(dateText[1]);
-        int day = Integer.parseInt(dateText[0]);
-
-        // Getting the date written in the text box.
-        Calendar date = Calendar.getInstance();
-        date.set(year, month,day);
-        Date compareDate = date.getTime();
-
-        // Making sure the list isn't empty.
+    private void searchDate(LocalDate date) {
         if(UIMain.mediaList.isEmpty()) return;
 
-        // Start the searcher.
-        ISearch<MediaObject> searcher = new SearchDateList<>(compareDate);
+        ISearch<MediaObject> searcher = new SearchDateList<>(date);
         searcher.setList(UIMain.mediaList);
 
-        // Set the result of the searcher in the Image View.
-        imageView.setImage(new Image(searcher.run().getFile().getAbsolutePath()));
-        // Set the listView to all the found images.
-        listView.setItems(new ObservableListWrapper<>(searcher.getList()));
+        MediaObject search = searcher.run();
+        imageView.setImage(new Image(search.getFile().toURI().toString()));
     }
 }

@@ -48,7 +48,7 @@ public class SortInsertion<E extends MediaObject> implements ISort<E>{
         for(int i = 1; i < sortList.size(); ++i) {
             temp = sortList.get(i);
             inner = i;
-            while(inner > 0 && sortList.get(i - 1).getDatum().getTime() >= temp.getDatum().getTime()) {
+            while(inner > 0 && sortList.get(i - 1).getDate().isAfter(temp.getDate())) {
                 sortList.set(inner, sortList.get(inner - 1));
                 --inner;
             }
