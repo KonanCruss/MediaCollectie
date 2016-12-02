@@ -2,7 +2,12 @@ package MediaCollectie.ui;
 
 import MediaCollectie.UIMain;
 import MediaCollectie.data.MediaObject;
-import MediaCollectie.util.*;
+import MediaCollectie.util.search.ISearch;
+import MediaCollectie.util.search.SearchDateBinary;
+import MediaCollectie.util.search.SearchLocation;
+import MediaCollectie.util.sort.ISort;
+import MediaCollectie.util.sort.SortDate;
+import MediaCollectie.util.sort.SortMedian;
 import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
@@ -39,7 +44,7 @@ public class ControllerMain {
 
         for(File f : selectedFile.listFiles())
             if(f.isFile())
-                UIMain.mediaList.add(new MediaObject(f.getName(), (int)f.getTotalSpace(), new Date(f.lastModified()), f.getAbsoluteFile()));
+                UIMain.mediaList.add(new MediaObject(f.getName(), new Date(f.lastModified()), f.getAbsoluteFile()));
 
         listView.setItems(new ObservableListWrapper<>(UIMain.mediaList));
     }
@@ -49,12 +54,9 @@ public class ControllerMain {
         if(UIMain.mediaList.isEmpty()) return;
         switch (selectedID) {
             case 0:
-                sortDatumInsertion();
-                break;
-            case 1:
                 sortDatum();
                 break;
-            case 2:
+            case 1:
                 sortLightIntensity();
                 break;
             default:
@@ -76,54 +78,29 @@ public class ControllerMain {
     }
 
     private void sortDatum() {
-        ISort<MediaObject> sorter = new SortDate<>();
-        sorter.setList(UIMain.mediaList);
-        sorter.run();
+        if(UIMain.mediaList.isEmpty()) return;
+        ISort<MediaObject> sorter = new SortDate<>(MediaObject.getLocalDateMap(UIMain.mediaList));
 
-        UIMain.mediaList = new ArrayList<>(sorter.getList());
-        listView.setItems(new ObservableListWrapper<>(sorter.getList()));
-    }
-    private void sortDatumInsertion() {
-        ISort<MediaObject> sorter = new SortInsertion<>();
-        sorter.setList(UIMain.mediaList);
-        sorter.run();
-
-        UIMain.mediaList = new ArrayList<>(sorter.getList());
-        listView.setItems(new ObservableListWrapper<>(sorter.getList()));
+        UIMain.mediaList = new ArrayList<>(sorter.run());
+        listView.getItems().clear();
+        listView.setItems(new ObservableListWrapper<>(UIMain.mediaList));
     }
     private void sortLightIntensity() {
-        ISort<MediaObject> sorter = new SortLightIntensity<>();
-        sorter.setList(UIMain.mediaList);
-        sorter.run();
+        if(UIMain.mediaList.isEmpty()) return;
+        ISort<MediaObject> sorter = new SortMedian<>(UIMain.mediaList);
 
-        UIMain.mediaList = new ArrayList<>(sorter.getList());
-        listView.setItems(new ObservableListWrapper<>(sorter.getList()));
+        UIMain.mediaList = new ArrayList<>(sorter.run());
+        listView.getItems().clear();
+        listView.setItems(new ObservableListWrapper<>(UIMain.mediaList));
     }
 
     private void searchLocation() {
-        // Get the latitude and longitude value of your current location (needs connection to the web).
-        String[] location = HandlerLocation.getLatitudeAndLongitude("");
-        // Some control to make sure there are no NullPointerExceptions.
-        if(location == null || location.length < 2) {
-            return;
-        }
-        if(UIMain.mediaList.isEmpty()) return;
-
-        // Search for the image.
-        ISearch<MediaObject> searcher = new SearchClosest<>(HandlerLocation.D2R(Double.parseDouble(location[0])), HandlerLocation.D2R(Double.parseDouble(location[1])));
-
-        searcher.setList(UIMain.mediaList);
-        MediaObject search = searcher.run();
-        System.out.println(search);
-        imageView.setImage(new Image(search.getFile().toURI().toString()));
+        ISearch<MediaObject> search = new SearchLocation<>(MediaObject.getLocationMap(UIMain.mediaList));
+        imageView.setImage(new Image(search.run().getFile().toURI().toString()));
     }
     private void searchDate(LocalDate date) {
-        if(UIMain.mediaList.isEmpty()) return;
-
-        ISearch<MediaObject> searcher = new SearchDateList<>(date);
-        searcher.setList(UIMain.mediaList);
-
-        MediaObject search = searcher.run();
-        imageView.setImage(new Image(search.getFile().toURI().toString()));
+        ISearch<MediaObject> search = new SearchDateBinary<MediaObject>(MediaObject.getLocalDateMap(UIMain.mediaList), date);
+        MediaObject result = search.run();
+        if(result != null) imageView.setImage(new Image(result.getFile().toURI().toString()));
     }
 }

@@ -12,9 +12,9 @@ import java.util.Date;
 public class Main {
 
     public static void main(String[] args) {
-        String URL = "D:/Documenten/School/Datastructuren/Images/DSC_0440.jpg";
+        String URL = "D:/Documenten/School/Datastructuren/Images/DSC_0441.jpg";
         File file = new File(URL);
-        MediaObject image = new MediaObject(file.getName(), (int)file.getTotalSpace(), new Date(file.lastModified()), file);
+        MediaObject image = new MediaObject(file.getName(), new Date(file.lastModified()), file);
         System.out.println("Image: " + HandlerLocation.R2D(image.getLatitude()) + " , " + HandlerLocation.R2D(image.getLongitude()));
 
         String[] location = HandlerLocation.getLatitudeAndLongitude("");
